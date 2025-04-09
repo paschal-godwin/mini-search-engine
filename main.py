@@ -1,5 +1,4 @@
-# === Imports ===
-# Put all import statements here
+# Imports 
 import os
 import streamlit as st
 import fitz

@@ -71,7 +71,7 @@ python main.py
 ---
 
 ## License
-
+This project is licensed under the Apache 2.0 License — free to use, modify, and distribute **with attribution to Paschal Godwin**
 
 ---
 

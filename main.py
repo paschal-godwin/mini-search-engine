@@ -16,11 +16,10 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from langchain.chains.combine_documents.stuff import StuffDocumentsChain
 from langchain.chains.combine_documents.map_reduce import MapReduceDocumentsChain
-#from IPython.display import Markdown, display, update_display
 
 
-# === PDF Text Extraction ===
-# Your extract_text_with_metadata() function
+
+# PDF Text Extraction
 def extract_text_with_metadata(pdf_folders):
     documents = []
     for filename in os.listdir(pdf_folders):
@@ -42,8 +41,7 @@ def extract_text_with_metadata(pdf_folders):
                 print(f"Skipped (no text): {filename}")
     return documents
 
-# === Chunking ===
-# Your text splitter and document chunking logic
+# Chunking
 def splitter_chunk_with_metadata(pages):
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
@@ -59,8 +57,7 @@ def splitter_chunk_with_metadata(pages):
             all_chunks.append(chunk)
     return all_chunks
 
-# === Prompt Templates ===
-# Your STRICT_PROMPT and LOOSE_PROMPT
+# Prompt Templates
 strict_prompt = PromptTemplate(
     input_variables =["context","question"],
     template="""
@@ -92,8 +89,7 @@ loose_prompt = PromptTemplate(
 )
 
 
-# === Chain Constructors ===
-# get_strict_chain() and get_loose_chain()
+# Chain Constructors
 def get_strict_chain(llm,retriever):
     return RetrievalQA.from_chain_type(
         llm=ChatOpenAI(model = 'gpt-4o-mini'),
@@ -112,8 +108,7 @@ def get_loose_chain(llm, retriever):
         )
 
 
-# === LLM Review Function ===
-# review_answer_with_llm()
+# LLM Review Function 
 def review_answer_with_llm(question, initial_answer, llm):
     review_prompt = f"""
 You are a helpful AI assistant.
@@ -128,8 +123,7 @@ If it’s already good, just say: "The answer is good.".
 """
     return llm.invoke(review_prompt).content
 
-# === Setup / Config ===
-# Load .env, embedder, retriever, chains
+# Setup / Config
 load_dotenv()
 pdf_folders = r"C:\Users\User\Documents\Projects\Mini_search_engine\books"
 pages = extract_text_with_metadata(pdf_folders)
@@ -142,8 +136,7 @@ llm = ChatOpenAI(temperature=0)
 strict_chain = get_strict_chain(llm, retriever)
 loose_chain = get_loose_chain(llm, retriever)
 
-# === Ask Question Function ===
-# ask_question()
+# Ask Question Function
 def ask_question(mode, query):
     if mode == "strict":
         result = strict_chain.invoke({"query": query})
@@ -176,5 +169,5 @@ def ask_question(mode, query):
     else:
         print("Invalid mode. Use 'strict' or 'loose'")
 
-# === Example Call ===
+# Example Call
 ask_question("enhanced", "Who is the father of radiography?")

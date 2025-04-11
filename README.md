@@ -82,9 +82,7 @@ Licensed under the Apache 2.0 License.
 💬 Feedback & Contributions
 Open to feedback, suggestions, and collaborations. Feel free to create issues or fork the repo!
 
-yaml
-Copy
-Edit
+
 
 ---
 

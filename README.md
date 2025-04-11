@@ -1,79 +1,100 @@
-# Mini Search Engine for Radiography PDFs
+# 🔍 Mini AI Search Engine for PDFs
 
-A LangChain-powered AI tool that lets you search through multiple radiography course PDFs and get improved, LLM-reviewed answers. It’s built for medical students who want fast, relevant answers — with sources.
+An AI-powered Streamlit app that lets you upload multiple PDFs (e.g. Radiography lecture notes or any course material), ask questions in natural language, and get answers with source references.
 
----
+Built to support different reasoning styles using **LangChain**, **OpenAI**, and **ChromaDB**, this app offers 3 powerful answer modes:
 
-## Features
-- **Multi-PDF Search**: Upload multiple PDFs and extract page-level text with metadata.
-- **RAG (Retrieval-Augmented Generation)**: Uses ChromaDB as vector store and OpenAI for answers.
-- **Strict vs Loose Mode**:
-  - *strict*: Focused on accurate, source-based responses.
-  - *loose*: Allows more flexible responses based on a wider context.
-- **LLM Answer Review**:
-  - *enhanced*: The AI checks if its own answer actually answers the question and suggests improvements.
+- ✅ **Strict** — answers strictly from retrieved content  
+- 🌀 **Loose** — uses flexible context matching with MMR  
+- 🤖 **Enhanced** — lets the LLM refine, validate, and rephrase the response
 
 ---
 
-## Stack
-- **Python 3.10**
-- **LangChain**
-- **OpenAI**
-- **ChromaDB**
-- **Streamlit (future UI)**
-- **Fitz (PyMuPDF)** for PDF parsing
-- **dotenv** for API key management
+## 📽️ Demo
+
+🎥 [Watch the demo on Twitter](https://x.com/PaschalUchennaG/status/1910488444179972602)
 
 ---
 
-## How to Run Locally
+## ✨ Features
 
-1. **Clone the repo**
-```bash
-git clone https://github.com/paschal-godwin/mini-search-engine.git
-cd mini-search-engine
-```
+- 📂 Upload and parse **multiple PDFs**
+- ❓ Ask **natural language** questions
+- 🔀 Choose answer mode:
+  - **Strict** – context-only answers
+  - **Loose** – fuzzy flexible answers using MMR
+  - **Enhanced** – smart LLM-reviewed response
+- 📌 Returns answers with **source references**
+- 🧠 Caches stored PDFs + lets you upload new ones
+- 🧼 Clear/reset mode and live toggling between reasoning styles
 
-2. **Create and activate virtual environment**
-```bash
-python -m venv venv
-venv\Scripts\activate  # For Windows
-```
+---
 
-3. **Install dependencies**
+## 🛠️ Tech Stack
+
+- [LangChain](https://www.langchain.com/)
+- [ChromaDB](https://www.trychroma.com/)
+- [OpenAI API](https://openai.com/)
+- [Streamlit](https://streamlit.io/)
+- Python 3.10+
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 ```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+2. Install dependencies
+bash
+Copy
+Edit
 pip install -r requirements.txt
-```
+3. Add your OpenAI API key
+Create a .env file:
 
-4. **Add your `.env` file**
-```env
-OPENAI_API_KEY=your_openai_key_here
-```
+env
+Copy
+Edit
+OPENAI_API_KEY=your-openai-key
+4. Run the app
+bash
+Copy
+Edit
+streamlit run main.py
+🧪 Example Use Cases
+📚 Radiography students studying for exams
 
-5. **Run the app**
+🧠 Summarizing large technical PDF content
+
+📄 Quick search and QA over any academic or textbook materials
+
+👨‍💻 Author
+Paschal Godwin
+📍 Twitter/X: @PaschalUchennaG
+
+📄 License
+Licensed under the Apache 2.0 License.
+✅ Free to use
+🙏 Just give credit if you build on it or share it publicly.
+
+💬 Feedback & Contributions
+Open to feedback, suggestions, and collaborations. Feel free to create issues or fork the repo!
+
+yaml
+Copy
+Edit
+
+---
+
+### ✅ Next Step:
+1. Copy that into your `README.md`
+2. Save, commit, and push:
 ```bash
-python main.py
-```
-
----
-
-## Example Use Case
-> “Who is the father of radiography?”  
-**Enhanced mode answer:** Wilhelm Conrad Röntgen, who discovered X-rays in 1895 — with reviewed suggestions and source references.
-
----
-
-## Future Improvements
-- Streamlit interface for upload and Q&A
-- Option to upload new PDFs dynamically
-- Add support for local embeddings (no OpenAI)
-
----
-
-## License
-This project is licensed under the Apache 2.0 License — free to use, modify, and distribute **with attribution to Paschal Godwin**
-
----
+git add README.md
+git commit -m "Updated README with demo, Streamlit, and features"
+git push
 
 Built with love, fear, and late nights by Paschal.
 

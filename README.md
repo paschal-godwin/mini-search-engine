@@ -42,51 +42,34 @@ Built to support different reasoning styles using **LangChain**, **OpenAI**, and
 
 ## 🚀 Getting Started
 
-### 1. Clone the repository
+### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-2. Install dependencies
+git clone https://github.com/paschal-godwin/mini-search-engine.git
+cd mini-search-engine
+2. Install Dependencies
+Make sure you have Python 3.10+ installed. Then install the required packages:
+
 bash
 Copy
 Edit
 pip install -r requirements.txt
-3. Add your OpenAI API key
-Create a .env file:
+3. Add Your OpenAI API Key
+Create a .env file in the root of the project and add your OpenAI key:
 
 env
 Copy
 Edit
 OPENAI_API_KEY=your-openai-key
-4. Run the app
+4. Run the App
 bash
 Copy
 Edit
 streamlit run main.py
-🧪 Example Use Cases
-📚 Radiography students studying for exams
-
-🧠 Summarizing large technical PDF content
-
-📄 Quick search and QA over any academic or textbook materials
-
-👨‍💻 Author
-Paschal Godwin
-📍 Twitter/X: @PaschalUchennaG
-
 📄 License
-Licensed under the Apache 2.0 License.
-✅ Free to use
-🙏 Just give credit if you build on it or share it publicly.
-
-💬 Feedback & Contributions
-Open to feedback, suggestions, and collaborations. Feel free to create issues or fork the repo!
-
-
-
----
-
-
+This project is licensed under the MIT License. Feel free to use, modify, and share it.
 
 Built with love, fear, and late nights by Paschal.
+Training LLMs by day, reading X-rays by night.
+
 

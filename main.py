@@ -17,10 +17,11 @@ from langchain.chains.combine_documents.stuff import StuffDocumentsChain
 from langchain.chains.combine_documents.map_reduce import MapReduceDocumentsChain
 
 
-
 # PDF Text Extraction
-def extract_text_with_metadata(pdf_folders):
+@st.cache_data
+def load_stored_documents(pdf_folders = r"C:\Users\User\Documents\Projects\Mini_search_engine\books"):
     documents = []
+
     for filename in os.listdir(pdf_folders):
         if filename.lower().endswith(".pdf"):
             pdf_path = os.path.join(pdf_folders, filename)
@@ -28,7 +29,7 @@ def extract_text_with_metadata(pdf_folders):
 
             full_text = ""
             for page in doc:
-                full_text += page.get_text()
+                full_text += page.get_text("text")
 
             if full_text.strip():
                 documents.append(Document(
@@ -38,6 +39,22 @@ def extract_text_with_metadata(pdf_folders):
                 print(f"Loaded: {filename}")
             else:
                 print(f"Skipped (no text): {filename}")
+    return documents
+
+def process_uploaded_documents(uploaded_files):
+    documents = []
+    for file in uploaded_files:
+        text=""
+        file_name = file.name
+        pdf = fitz.open(stream=file.read(), filetype="pdf")
+
+        for page in pdf:
+            text += page.get_text("text")
+            metadata = {"source":file_name}
+
+        if text.strip():
+            documents.append(Document(page_content=text, metadata=metadata))
+        
     return documents
 
 # Chunking
@@ -108,7 +125,7 @@ def get_loose_chain(llm, retriever):
 
 
 # LLM Review Function 
-def review_answer_with_llm(question, initial_answer, llm):
+def review_with_LLM(question, initial_answer, llm):
     review_prompt = f"""
 You are a helpful AI assistant.
 
@@ -122,51 +139,127 @@ If it’s already good, just say: "The answer is good.".
 """
     return llm.invoke(review_prompt).content
 
-# Setup / Config
-load_dotenv()
-pdf_folders = r"C:\Users\User\Documents\Projects\Mini_search_engine\books"
-pages = extract_text_with_metadata(pdf_folders)
-chunks = splitter_chunk_with_metadata(pages)
-embedding = OpenAIEmbeddings()
 
-vector_db = Chroma.from_documents(chunks, embedding)
-retriever = vector_db.as_retriever(search_type="mmr", search_kwargs={"k":6})
-llm = ChatOpenAI(temperature=0)
-strict_chain = get_strict_chain(llm, retriever)
-loose_chain = get_loose_chain(llm, retriever)
+def ask_question(strict_chain,loose_chain,mode,query):
 
-# Ask Question Function
-def ask_question(mode, query):
-    if mode == "strict":
+    st.write(f"You are using **{mode}** mode.")
+    if mode == "Strict":
         result = strict_chain.invoke({"query": query})
-        print("\n[STRICT MODE]")
-        print("Answer:", result["result"])
-        print("Sources:")
+        main_result = result["result"]
+        st.markdown("### STRICT MODE")
+        st.markdown("Answer:")
+        st.write(main_result)
+        st.markdown("### Sources:")
         for doc in result["source_documents"]:
-            print(f" - {doc.metadata.get('source', 'Unknown')}")
+            st.write(f" - {doc.metadata.get('source', 'Unknown')}")
 
-    elif mode == "loose":
+    elif mode == "Loose":
         result = loose_chain.invoke(query)
-        print("\n[LOOSE MODE]")
-        print("Answer:", result)
+        st.markdown("### LOOSE MODE]")
+        st.markdown("### Answer")
+        st.write(result)
 
-    elif mode == "enhanced":
+    elif mode == "Enhanced":
         response = strict_chain.invoke({"query":query})
         result = response["result"]
         llm=ChatOpenAI(model = 'gpt-4o-mini')
-        reviewed = review_answer_with_llm(
+        reviewed = review_with_LLM(
             question=query,
             initial_answer=result,
             llm=llm)
-        print("\n[ENHANCED MODE]")
-        print("\nLLM Review Output:\n", reviewed)
-        print("\nSources:")
+        st.markdown("### ENHANCED MODE]")
+        st.markdown("### LLM Review Output:")
+        st.write(reviewed)
+        st.markdown("### Sources:")
         for doc in response["source_documents"]:
-            print(f" - {doc.metadata.get('source', 'Unknown')}")
+            st.write(f" - {doc.metadata.get('source', 'Unknown')}")
         
 
     else:
-        print("Invalid mode. Use 'strict' or 'loose'")
+        st.write("Invalid mode. Use 'strict' or 'loose'")
 
-# Example Call
-ask_question("enhanced", "Who is the father of radiography?")
+
+def main():
+    load_dotenv()
+    llm = ChatOpenAI(temperature=0)
+
+    st.set_page_config(page_title="Mini Search Engine", layout="wide")
+
+    st.markdown(
+    """
+    <style>
+    .block-container {
+        padding-top: 2rem;
+    }
+
+    input[type="text"] {
+        background-color: #1E1E1E;
+        color: white;
+    }
+
+    textarea {
+        background-color: #1E1E1E;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+    
+    st.title("Mini Search Engine For Radiography PDFs and Any PDF of your choice....")
+
+    stored_docs = load_stored_documents()
+
+    uploaded_files = st.file_uploader("Upload multiple PDFs", type="pdf", accept_multiple_files=True)
+
+    uploaded_docs = []
+    if uploaded_files:
+        with st.spinner("Processing uploaded PDFs..."):
+            uploaded_docs = process_uploaded_documents(uploaded_files)
+    all_docs = stored_docs + uploaded_docs
+
+    if "query_input" not in st.session_state:
+        st.session_state["query_input"] = ""
+    if "mode_select" not in st.session_state:
+        st.session_state["mode_select"] = "Strict"
+    
+    query = st.text_input("Ask your question here", key="query_input")
+    mode = st.radio(
+        "Select answer mode", 
+        ["Strict", "Loose", "Enhanced"], 
+        key="mode_select", 
+        help="Choose how the AI answers: source_based, flexible, or LLM-reviewed"
+    )
+
+    col1, col2 = st.columns(2)
+    with col1:
+        submit = st.button("Submit", key="submit_button")
+    with col2:
+        clear = st.button("Clear", key="clear_button")
+    
+    if clear:
+        st.session_state["query_input"]=""
+        st.session_state["mode_select"]="Strict"
+        st.rerun()
+    
+    if submit and query and all_docs:
+        with st.spinner("Processing your request..."):
+            chunks = splitter_chunk_with_metadata(all_docs)
+            embeddings = OpenAIEmbeddings()
+            vector_db = Chroma.from_documents(chunks, embeddings)
+            retriever = vector_db.as_retriever(search_type="mmr", search_kwargs={"k":6})
+
+            loose_chain = get_loose_chain(llm, retriever)
+            strict_chain = get_strict_chain(llm, retriever)
+
+            ask_question(strict_chain,loose_chain,mode,query)
+
+   
+
+
+
+
+
+if __name__ == "__main__":
+    main()
+

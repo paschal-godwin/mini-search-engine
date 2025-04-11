@@ -88,13 +88,7 @@ Edit
 
 ---
 
-### ✅ Next Step:
-1. Copy that into your `README.md`
-2. Save, commit, and push:
-```bash
-git add README.md
-git commit -m "Updated README with demo, Streamlit, and features"
-git push
+
 
 Built with love, fear, and late nights by Paschal.
 

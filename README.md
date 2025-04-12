@@ -1,88 +1,83 @@
-# 🔍 Mini AI Search Engine for PDFs
+# 🚀🧠 Mini AI Search Engine for PDFs
 
-An AI-powered Streamlit app that lets you upload multiple PDFs (e.g. Radiography lecture notes or any course material), ask questions in natural language, and get answers with source references.
+A mini AI-powered search engine that lets you upload multiple PDFs (like Radiography materials) and ask natural language questions. Choose how the AI answers: strictly from the source, loosely, or with enhanced flexibility.
 
-Built to support different reasoning styles using **LangChain**, **OpenAI**, and **ChromaDB**, this app offers 3 powerful answer modes:
+## 📽️ Demo Preview
 
-- ✅ **Strict** — answers strictly from retrieved content  
-- 🌀 **Loose** — uses flexible context matching with MMR  
-- 🤖 **Enhanced** — lets the LLM refine, validate, and rephrase the response
+https://x.com/PaschalUchennaG/status/1910488444179972602
 
----
+## 📦 Features
 
-## 📽️ Demo
-
-🎥 [Watch the demo on Twitter](https://x.com/PaschalUchennaG/status/1910488444179972602)
-
----
-
-## ✨ Features
-
-- 📂 Upload and parse **multiple PDFs**
-- ❓ Ask **natural language** questions
-- 🔀 Choose answer mode:
-  - **Strict** – context-only answers
-  - **Loose** – fuzzy flexible answers using MMR
-  - **Enhanced** – smart LLM-reviewed response
-- 📌 Returns answers with **source references**
-- 🧠 Caches stored PDFs + lets you upload new ones
-- 🧼 Clear/reset mode and live toggling between reasoning styles
+- Upload multiple PDF files
+- Ask questions in natural language
+- Three response modes:
+  - Strict (source-based)
+  - Loose (flexible)
+  - Enhanced (LLM-reviewed)
+- Source highlighting
+- Simple UI via Streamlit
 
 ---
 
-## 🛠️ Tech Stack
-
-- [LangChain](https://www.langchain.com/)
-- [ChromaDB](https://www.trychroma.com/)
-- [OpenAI API](https://openai.com/)
-- [Streamlit](https://streamlit.io/)
-- Python 3.10+
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the Repository
+## ⚙️ Getting Started
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
-2. Install Dependencies
-Make sure you have Python 3.10+ installed. Then install the required packages:
+git clone https://github.com/paschal-godwin/mini-search-engine.git
+cd mini-search-engine
+```
 
-bash
-Copy
-Edit
+### 2. Install Dependencies
+
+Make sure you have Python 3.10+ installed.
+
+```bash
 pip install -r requirements.txt
-3. Add Your OpenAI API Key
-Create a .env file in the root of the project and add your OpenAI key:
-3. Add Your OpenAI API Key
+```
+
+### 3. Add Your OpenAI API Key
+
 Create a .env file in the root of the project and add your OpenAI key:
 
-env
-Copy
-Edit
-OPENAI_API_KEY=your-openai-key
-4. Run the App
-4. Run the App
-bash
-Copy
-Edit
+```env
+OPENAI_API_KEY=your-openai-key-here
+```
+
+### 4. Run the App
+
+```bash
 streamlit run main.py
-📄 License
-Licensed under the Apache 2.0 License.
-✅ Free to use
+```
+
+---
+
+## 🧰 Tech Stack
+
+- Streamlit
+- LangChain
+- ChromaDB
+- OpenAI Embeddings
+- Python 3.10+
+
+---
+
+## 📄 License
+
+This project is licensed under the Apache 2.0 License.
+
+✅ Free to use  
 🙏 Please give credit if you build on it or share it publicly.
 
-💬 Feedback & Contributions
-Open to feedback, suggestions, and collaborations.
-Feel free to create issues or fork the repo!
+---
 
+## ✍🏽 Author
 
+**Paschal Godwin**  
+Training LLMs by day, reading X-rays by night.  
+Twitter/X: @PaschalUchennaG  
+GitHub: https://github.com/paschal-godwin
 
-Built with love, fear, and late nights by Paschal.
-Training LLMs by day, reading X-rays by night.
+---
 
-
+Built with love, fear, and late nights ☕.

@@ -183,6 +183,8 @@ def main():
     load_dotenv()
     llm = ChatOpenAI(temperature=0)
 
+    api_key = st.secrets["OPENAI_API_KEY"]
+
     st.set_page_config(page_title="Mini Search Engine", layout="wide")
 
     st.markdown(
@@ -223,6 +225,17 @@ def main():
     if "mode_select" not in st.session_state:
         st.session_state["mode_select"] = "Strict"
     
+    col1, col2 = st.columns(2)
+    with col1:
+        submit = st.button("Submit", key="submit_button")
+    with col2:
+        clear = st.button("Clear", key="clear_button")
+
+    if clear:
+        st.session_state["query_input"]=""
+        st.session_state["mode_select"]="Strict"
+        st.rerun()
+    
     query = st.text_input("Ask your question here", key="query_input")
     mode = st.radio(
         "Select answer mode", 
@@ -230,17 +243,6 @@ def main():
         key="mode_select", 
         help="Choose how the AI answers: source_based, flexible, or LLM-reviewed"
     )
-
-    col1, col2 = st.columns(2)
-    with col1:
-        submit = st.button("Submit", key="submit_button")
-    with col2:
-        clear = st.button("Clear", key="clear_button")
-    
-    if clear:
-        st.session_state["query_input"]=""
-        st.session_state["mode_select"]="Strict"
-        st.rerun()
     
     if submit and query and all_docs:
         with st.spinner("Processing your request..."):

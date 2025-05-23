@@ -180,10 +180,8 @@ def ask_question(strict_chain,loose_chain,mode,query):
 
 
 def main():
-    load_dotenv()
+    os.environ["OPENAI_API_KEY"] = st.secrets.get("OPENAI_API_KEY", "")
     llm = ChatOpenAI(temperature=0)
-
-    api_key = st.secrets["OPENAI_API_KEY"]
 
     st.set_page_config(page_title="Mini Search Engine", layout="wide")
 

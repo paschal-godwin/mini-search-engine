@@ -1,1 +1,11 @@
 libgl1-mesa-glx
+build-essential
+pkg-config
+libharfbuzz-dev
+libfreetype-dev
+libjpeg-dev
+liblcms2-dev
+libopenjp2-7-dev
+libz-dev
+libtesseract-dev
+libleptonica-dev
